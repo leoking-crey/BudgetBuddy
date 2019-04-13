@@ -2,26 +2,68 @@
 <html lang="en">
 
 
+<!DOCTYPE html>
+<html lang="en">
+
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
-  <link rel="stylesheet" href="css/menu.css">
-  <link rel="shortcut icon" type="img/png" href="img/favicon.png">
-  <title>Buddget Buddy!</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+  <link rel="stylesheet" href="../css/expense.css">
+
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <title>Budget Buddy!</title>
 </head>
-    <header class="header">
+    <body>
+      <div class="div-inside" ng-app="incomeApp", ng-controller="incomeCtrl">
         <div class="logo-box">
-            <img src="img/logo-white.png" alt="Logo" class="logo" class="logo">
+            <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
+            <div id="form-div">
+              <form class="form" id="form1">
+
+                <p class="primaryinc" style=color:#1f77b4 > <b>Housing</b>
+                  <input name="primaryinc" type="number" class="validate[required,custom[number]] feedback-input" ng-model="income.primary" placeholder="Primary Monthly Income (after tax)" id="primaryinc" />
+                </p>
+
+                <p class="passiveinc"style=color:#ff7f0e> <b>Utilities</b>
+                  <input name="passiveinc" type="number" class="validate[required,custom[number]] feedback-input" id="passiveinc" ng-model="income.passive" placeholder="Passive Income (side)" />
+                </p>
+
+
+
+                <div class="submit">
+                  <input type="submit" id="button-blue" ng-click="incomeSave()" value=NEXT></input>
+                  <div class="ease"></div>
+                </div>
+              </form>
+              </div>
+
+        </div>
+        <div class="divleft">
+            Total Income: ${{0 + income.primary + income.passive}}
+          </div>
         </div>
 
-       
-    </header>
 
+    <script>
+      var app = angular.module('incomeApp', []);
+      app.controller('incomeCtrl', function($scope, $location, $http, $window) {
+        $scope.income = {
+        };
+        $scope.incomeSave = function(){
+          $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/incomeSave', JSON.stringify($scope.income));
+          $window.location.href = '/src/asset.html';
+        }
+      });
+    </script>
 
-<body>
 </body>
 
 
 </html>
+
