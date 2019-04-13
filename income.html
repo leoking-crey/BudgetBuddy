@@ -2,6 +2,10 @@
 <html lang="en">
 
 
+<!DOCTYPE html>
+<html lang="en">
+
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,153 +20,44 @@
   <title>Budget Buddy!</title>
 </head>
     <body>
-      <div class="div-inside" ng-app="expenseApp", ng-controller="expenseCtrl">
+      <div class="div-inside" ng-app="incomeApp", ng-controller="incomeCtrl">
         <div class="logo-box">
             <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
-        </div class="outerbounds">
             <div id="form-div">
               <form class="form" id="form1">
 
                 <p class="primaryinc" style=color:#1f77b4 > <b>Housing</b>
-                  <input name="primaryinc" type="number" class="validate[required,custom[number]] feedback-input" ng-model="expenses.primary" placeholder="Primary Monthly Income (after tax)" id="primaryinc" />
+                  <input name="primaryinc" type="number" class="validate[required,custom[number]] feedback-input" ng-model="income.primary" placeholder="Primary Monthly Income (after tax)" id="primaryinc" />
                 </p>
 
                 <p class="passiveinc"style=color:#ff7f0e> <b>Utilities</b>
-                  <input name="passiveinc" type="number" class="validate[required,custom[number]] feedback-input" id="passiveinc" ng-model="expenses.util" placeholder="Passive Income (side)" />
+                  <input name="passiveinc" type="number" class="validate[required,custom[number]] feedback-input" id="passiveinc" ng-model="income.passive" placeholder="Passive Income (side)" />
                 </p>
 
 
 
                 <div class="submit">
-                  <input type="submit" id="button-blue" ng-click="expenseSave()" value=NEXT></input>
+                  <input type="submit" id="button-blue" ng-click="incomeSave()" value=NEXT></input>
                   <div class="ease"></div>
                 </div>
               </form>
-
-
-              <div id="form-main">
-
-                  <div id="form-left-div">
-
-
-                          <script src="https://d3js.org/d3.v3.min.js"></script>
-                          <div>
-
-                          </div>
-                          <script>
-                          var width = 860,
-                              height = 600 - 29; // adjust for height of input bar div
-                          var color = d3.scale.category10();
-                          // draw and append the container
-                          var svg = d3.select("body").append("svg")
-                            .attr("width", width).attr("height", height);
-                          // set the thickness of the inner and outer radii
-                          var min = Math.min(width, height);
-                          var oRadius = (Math.min(width, height) / 2 - 10)*0.9 ;
-                          var iRadius = (Math.min(width, height) / 2 - 10)* 0.6 ;
-                          // construct default pie laoyut
-                          var pie = d3.layout.pie().value(function(d){ return d; }).sort(null);
-                          // construct arc generator
-                          var arc = d3.svg.arc()
-                            .outerRadius(oRadius)
-                            .innerRadius(iRadius);
-                          // creates the pie chart container
-                          var g = svg.append('g')
-                          var g = svg.append('g')
-                            .attr('transform', function(){
-                              if ( window.innerWidth >= 960 ) var shiftWidth = width / 2;
-                              if ( window.innerWidth < 960 ) var shiftWidth = width / 3;
-                              return 'translate(' + shiftWidth + ',' + height / 2 + ')';
-                            })
-                          // generate random data
-
-                          var data = [document.getElementById("housingexp").value, document.getElementById("utilitiesexp").value, document.getElementById("carexp").value,
-                          document.getElementById("schoolexp").value,
-                          document.getElementById("groceryexp").value,
-                          document.getElementById("diningexp").value,
-                          document.getElementById("entertainmentexp").value,
-                          document.getElementById("insuranceexp").value,
-                          document.getElementById("subscriptionexp").value,
-                          document.getElementById("beautyexp").value
-                      ];
-
-                          // enter data and draw pie chart
-                          var path = g.datum(data).selectAll("path")
-                            .data(pie)
-                            .enter().append("path")
-                              .attr("class","piechart")
-                              .attr("fill", function(d,i){ return color(i); })
-                              .attr("d", arc)
-                              .each(function(d){ this._current = d; })
-
-
-                          function render(){
-                            data = [document.getElementById("housingexp").value, document.getElementById("utilitiesexp").value, document.getElementById("carexp").value,
-                          document.getElementById("schoolexp").value,
-                          document.getElementById("groceryexp").value,
-                          document.getElementById("diningexp").value,
-                          document.getElementById("entertainmentexp").value,
-                          document.getElementById("insuranceexp").value,
-                          document.getElementById("subscriptionexp").value,
-                          document.getElementById("beautyexp").value
-                      ];
-                            // generate new random data
-                            // add transition to new path
-                            g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween)
-                            // add any new paths
-                            g.datum(data).selectAll("path")
-                              .data(pie)
-                            .enter().append("path")
-                              .attr("class","piechart")
-                              .attr("fill", function(d,i){ return color(i); })
-                              .attr("d", arc)
-                              .each(function(d){ this._current = d; })
-                            // remove data not being used
-                            g.datum(data).selectAll("path")
-                              .data(pie).exit().remove();
-                          }
-                          render();
-
-                          //render every 2 seconds using setInterval
-                          setInterval(render,1000);
-                          function makeData(size){
-                            return d3.range(size).map(function(item){
-                             return Math.random()*100;
-                            });
-                          };
-
-
-
-                          // Store the displayed angles in _current.
-                          // Then, interpolate from _current to the new angles.
-                          // During the transition, _current is updated in-place by d3.interpolate.
-                          function arcTween(a) {
-                            var i = d3.interpolate(this._current, a);
-                            this._current = i(0);
-                            return function(t) {
-                              return arc(i(t));
-                            };
-                          }
-                      </script>
-                  </div>
-
-            </div>
+              </div>
 
         </div>
         <div class="divleft">
-            Total Expenses: ${{0 + expenses.housing + expenses.util + expenses.trans + expenses.school + expenses.grocery + expenses.dining + expenses.entertain + expenses.insurance + expenses.subs + expenses.beauty}}
+            Total Income: ${{0 + income.primary + income.passive}}
           </div>
         </div>
 
 
     <script>
-      var app = angular.module('expenseApp', []);
-      app.controller('expenseCtrl', function($scope, $location, $http) {
-        $scope.expenses = {
+      var app = angular.module('incomeApp', []);
+      app.controller('incomeCtrl', function($scope, $location, $http, $window) {
+        $scope.income = {
         };
-        $scope.expenseSave = function(){
-          $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/expenseSave', JSON.stringify($scope.expenses));
-          $location.url('/src/asset.html');
+        $scope.incomeSave = function(){
+          $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/incomeSave', JSON.stringify($scope.income));
+          $window.location.href = '/src/asset.html';
         }
       });
     </script>
@@ -171,3 +66,4 @@
 
 
 </html>
+
