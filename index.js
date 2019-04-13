@@ -30,7 +30,7 @@ app.get('/getexpenses', function (req, res) {
     obj = JSON.parse(rawdata)
     //resp = JSON.stringify(obj)
     console.log(obj)
-  })
+  //})
   res.json(obj)
 })
 app.listen(3001, () => console.log('Server running on port 3001'))
