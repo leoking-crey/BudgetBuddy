@@ -14,7 +14,7 @@ app.post('/expenseSave', (req, res) => {
    console.log(req.body)
    console.log("housing: ${req.body.housing}")
 
-   var json = JSON.stringify(json)
+   var json = JSON.stringify(req.body)
    fs.writeFile('./expenses.json', json, (err) => {
      if (!err) {
         console.log('done');
