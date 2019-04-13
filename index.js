@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const fs = require('fs')
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(function(req, res, next) {
@@ -12,8 +13,21 @@ app.post('/expenseSave', (req, res) => {
    console.log("saving data")
    console.log(req.body)
    console.log("housing: ${req.body.housing}")
+
+   json = JSON.stringify(json)
+   fs.writeFile('./expenses.json', json, (err) => {
+     if (!err) {
+        console.log('done');
+     }
+   })
 })
+
 app.get('/getexpenses', function (req, res) {
-  res.send('hello world')
+  var obj
+  fs.readFile('./expenses.json', 'utf8', function (err, data) {
+    if (err) throw err
+    obj = JSON.parse(data)
+  })
+  res.send(obj)
 })
 app.listen(3001, () => console.log('Server running on port 3001'))
