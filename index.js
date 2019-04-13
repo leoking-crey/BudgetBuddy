@@ -10,5 +10,7 @@ app.use(function(req, res, next) {
 });
 app.post('/expenseSave', (req, res) => {
    console.log("saving data")
+   console.log(req.body)
+   console.log("housing: ${req.body.housing}")
 })
 app.listen(3001, () => console.log('Server running on port 3001'))
