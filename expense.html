@@ -7,16 +7,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
-  <link rel="stylesheet" href="css/menu.css">
-  <link rel="shortcut icon" type="img/png" href="img/favicon.png">
+  <link rel="stylesheet" href="../css/menu.css">
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
   <title>Buddget Buddy!</title>
 </head>
     <header class="header">
         <div class="logo-box">
-            <img src="img/logo-white.png" alt="Logo" class="logo" class="logo">
+            <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
         </div>
+        <div id="form-main">
+            <div id="form-div">
+              <form class="form" id="form1">
 
-       
+                <p class="housingexp" >
+                  <input name="housingexp" type="number" class="validate[required,custom[number]] feedback-input" placeholder="Housing Expences (mortgage payments, rent)" id="housingexp" />
+                </p>
+
+                <p class="utilitiesexp">
+                  <input name="utilitiesexp" type="number" class="validate[required,custom[number]] feedback-input" id="utilitiesexp" placeholder="Utilities Expences (electricity, gas, water)" />
+                </p>
+
+                <p class="carexp">
+                  <input name="carexp" type="number" class="validate[required,custom[number]] feedback-input" id="carexp" placeholder="Transportation Expences (car payments, gas, bus pass)" />
+                </p>
+
+                <p class="schoolexp">
+                  <input name="schoolexp" type="number" class="validate[required,custom[number]] feedback-input" id="schoolexp" placeholder="School Expences (tuition, student loan payments, school supplies)" />
+                </p>
+
+                <p class="groceryexp">
+                    <input name="groceryexp" type="number" class="validate[required,custom[number]] feedback-input" id="groceryexp" placeholder="Grocery Expences (food and essentials)" />
+                </p>
+
+                <p class="diningexp">
+                  <input name="diningexp" type="number" class="validate[required,custom[number]] feedback-input" id="diningexp" placeholder="Dining Out Expences (restaurant and takeout/delivery meals)" />
+                </p>
+
+                <p class="entertainmentexp">
+                  <input name="entertainmentexp" type="number" class="validate[required,custom[number]] feedback-input" id="entertainmentexp" placeholder="Entertainment Expences (movies, drinks, sporting events)" />
+                </p>
+
+                <p class="insurrenceexp">
+                  <input name="insurrenceexp" type="number" class="validate[required,custom[number]] feedback-input" id="insurrenceexp" placeholder="Insurrence Payments (health, dental, life, pet)" />
+                </p>
+
+                <p class="subscriptionexp">
+                  <input name="subscriptionexp" type="number" class="validate[required,custom[number]] feedback-input" id="subscriptionexp" placeholder="Subscription Expences (netflix, magazines, clothing/cooking boxes)" />
+                </p>
+
+                <p class="beautyexp">
+                    <input name="beautyexp" type="number" class="validate[required,custom[number]] feedback-input" id="beautyexp" placeholder="Personal Care Expences (hair, makeup, nails, other beauty products/services)" />
+                </p>
+
+
+
+                <div class="submit">
+                  <input type="submit" value="SEND" id="button-blue"/>
+                  <div class="ease"></div>
+                </div>
+              </form>
+            </div>
+
+
     </header>
 
 
