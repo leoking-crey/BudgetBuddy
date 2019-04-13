@@ -63,12 +63,14 @@ body{
 	padding-right:35px;
 	padding-top:35px;
 	padding-bottom:50px;
-	width: 450px;
+	width: 650px;
 	float: left;
 	left: 50%;
 	position: absolute;
   margin-top:30px;
-	margin-left: -260px;
+  margin-left: -315px;
+  max-height: 470px;
+  overflow-y: scroll;
 }
 
 .feedback-input {
@@ -157,6 +159,22 @@ body{
   background-repeat: no-repeat;
 }
 
+#housingexp,
+#utilitiesexp,
+#carexp,
+#insurrenceexp,
+#schoolexp,
+#groceryexp,
+#diningexp,
+#entertainmentexp,
+#subscriptionexp,
+#beautyexp{
+  background-size:30px 30px;
+  background-position: 11px 8px;
+  background-repeat: no-repeat;
+}
+
+
 textarea {
     width: 100%;
     height: 150px;
@@ -224,4 +242,5 @@ input:focus, textarea:focus {
 		padding-right: 3%;
 	}
 }
+
 
