@@ -25,9 +25,9 @@ app.post('/expenseSave', (req, res) => {
 app.get('/getexpenses', function (req, res) {
   var obj
   var resp
-  fs.readFile('./new.json', 'utf8', function (err, data) {
-    if (err) throw err
-    obj = JSON.parse(data)
+  let rawdata = fs.readFileSync('./new.json') //, 'utf8', function (err, data) {
+    //if (err) throw err
+    obj = JSON.parse(rawdata)
     //resp = JSON.stringify(obj)
     console.log(obj)
   })
