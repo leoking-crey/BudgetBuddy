@@ -27,7 +27,7 @@ app.get('/getexpenses', function (req, res) {
   fs.readFile('./expenses.json', 'utf8', function (err, data) {
     if (err) throw err
     obj = JSON.parse(data)
-    console.log(obj)
+    console.log(JSON.stringify(obj))
   })
   res.send(obj)
 })
