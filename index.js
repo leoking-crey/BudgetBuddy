@@ -31,6 +31,6 @@ app.get('/getexpenses', function (req, res) {
     resp = JSON.stringify(obj)
     console.log(resp)
   })
-  res.send('hello world')
+  res.json(resp)
 })
 app.listen(3001, () => console.log('Server running on port 3001'))
