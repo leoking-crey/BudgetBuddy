@@ -28,9 +28,9 @@ app.get('/getexpenses', function (req, res) {
   fs.readFile('./new.json', 'utf8', function (err, data) {
     if (err) throw err
     obj = JSON.parse(data)
-    resp = JSON.stringify(obj)
-    console.log(resp)
+    //resp = JSON.stringify(obj)
+    console.log(obj)
   })
-  res.json(resp)
+  res.json(obj)
 })
 app.listen(3001, () => console.log('Server running on port 3001'))
