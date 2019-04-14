@@ -50,7 +50,8 @@ app.get('/getIncome', function (req, res) {
 })
 
 app.post('/assetSave', (req, res) => {
-   console.log(req.body)
+   console.log("save assets");
+   console.log(req.body);
 
    var json = JSON.stringify(req.body)
    fs.writeFile('./assets.json', json, (err) => {
