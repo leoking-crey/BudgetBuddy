@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+
+  <link rel="stylesheet" href="../css/income.css">
+
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <title>Budget Buddy!</title>
+</head>
+    <body>
+      <div class="div-inside" ng-app="incomeApp", ng-controller="incomeCtrl">
+        <div class="logo-box">
+            <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
+            <div id="form-div">
+
+              
+              <form class="form" id="form1">
+
+                <p class="primaryinc" style=color:#1f77b4 > <b>The expense you can choose to cut out or the investment that can grow </b>
+                  <input name="primaryinc" type="number" class="validate[required,custom[number]] feedback-input" ng-model="income.primary" placeholder="Primary Monthly Income (after tax)" id="primaryinc" />
+                </p>
+
+                <p class="passiveinc"style=color:#ff7f0e> <b>Length of wealth compounding</b>
+                  <input name="passiveinc" type="number" class="validate[required,custom[number]] feedback-input" id="passiveinc" ng-model="income.passive" placeholder="Passive Income (side)" />
+                </p>
+                <p class="passiveinc"style=color:#ff7f0e> <b>The interest rates ( 8% for historial market return or 3% - 4% for historial coupon rate)</b>
+                  <input name="passiveinc" type="number" class="validate[required,custom[number]] feedback-input" id="passiveinc" ng-model="income.passive" placeholder="Passive Income (side)" />
+                </p>
+                
+                <p class="passiveinc"style=color:#ff7f0e> <b>Wealth accumulated by the end of compounding horizon, please show them how much they have invested here</b>
+                  <input name="passiveinc" type="number" class="validate[required,custom[number]] feedback-input" id="passiveinc" ng-model="income.passive" placeholder="Passive Income (side)" />
+                </p>
+
+
+
+                <div class="submit">
+                  <input type="submit" id="button-blue" ng-click="incomeSave()" value=NEXT></input>
+                  <div class="ease"></div>
+                </div>
+              </form>
+
+
+              
+          
+
+              </div>
+
+
+              <div>
+                  <button>COMPOUND THE DOLLAR-BILL!</button>
+                </div>
+                <br>
+              
+              
+                  <script type="text/javascript">
+              
+                    //Width and height
+                    var w = 960;
+                    var h = 500;
+                    
+                    var dataset = [ 500, 600, 13, 19, 21, 25, 22, 18, 15, 13,
+                            11, 12, 15, 20, 18, 17, 16, 18, 23, 25,34,36,12,32,56,23,25,34,87,43,54 ];
+              
+                    var xScale = d3.scaleBand()
+                            .domain(d3.range(dataset.length))
+                            .rangeRound([0, w])
+                            .paddingInner(0.08);
+              
+                    var yScale = d3.scaleLinear()
+                            .domain([0, d3.max(dataset)])
+                            .range([50, h]);
+                    
+                    //Create SVG element
+                    var svg = d3.select("body")
+                          .append("svg")
+                          .attr("width", w)
+                          .attr("height", h);
+              
+                    //Create bars
+                    svg.selectAll("rect")
+                       .data(dataset)
+                       .enter()
+                       .append("rect")
+                       .attr("x", function(d, i) {
+                           return xScale(i);
+                       })
+                       .attr("y", function(d) {
+                           return h - yScale(d);
+                       })
+                       .attr("width", xScale.bandwidth())
+                       .attr("height", function(d) {
+                           return yScale(d);
+                       })
+                       .attr("fill", function(d) {
+                        return "rgb(0, 0, " + Math.round(d * 10) + ")";
+                       });
+              
+                    //Create labels
+                    svg.selectAll("text")
+                       .data(dataset)
+                       .enter()
+                       .append("text")
+                       .text(function(d) {
+                           return d;
+                       })
+                       .attr("text-anchor", "middle")
+                       .attr("x", function(d, i) {
+                           return xScale(i) + xScale.bandwidth() / 2;
+                       })
+                      .attr("y", function(d) {
+                                  if(yScale(d)<=15) {
+                                      return h - yScale(d) - 2;
+                                  }else{
+                                      return h - yScale(d) + 14;
+                                  }
+                              })
+                       .attr("font-family", "sans-serif")
+                       .attr("font-size", "11px")
+                       .attr("fill", function (d) {
+                         if(yScale(d)<=15){
+                             return "black"
+                         }else{
+                             return "white";
+                         }
+                             });
+              
+              
+                          //On click, update with new data
+                          d3.select("button")
+                              .on("click", function() {
+              
+                                  //New values for dataset
+                                  var numValues = dataset.length;						//Count original length of dataset
+                                  dataset = [];  						 				//Initialize empty array
+
+
+                                  //the max value of the heights of the columns
+                                  var maxValue = 10000;
+                                  for (var i = 0; i < numValues; i++) {				//Loop numValues times
+
+                                      //remember to create a variable for user's input for interest rate
+                                      //formula compounding: dataset[i] = datset[ i -1 ] * (1 + interest )
+                                      //for an (ith) year,  the value grew so far is : dataset[i + 1]
+                                      
+                                      var newNumber = Math.floor(Math.random() * maxValue); //New random integer (0-24)
+                                      dataset.push(newNumber);			 			//Add new number to array
+                                  }
+              
+                                  yScale.domain([0, d3.max(dataset)]);
+              
+                                  //Update all rects
+                                  svg.selectAll("rect")
+                                      .data(dataset)
+                          .transition()
+                                      .delay(function(d, i) {
+                                          return i * 100;
+                                      })
+                          .duration(1000)
+                          .ease(d3.easeBounceOut)
+                                      .attr("y", function(d) {
+                                          return h - yScale(d);
+                                      })
+                                      .attr("height", function(d) {
+                                          return yScale(d);
+                                      })
+                                      .attr("fill", function(d) {
+                                          return "rgb(0,0," + Math.round(d * 10) + ")";
+                                      });
+              
+              
+              
+                                  //Update all labels
+                                  svg.selectAll("text")
+                                      .data(dataset)
+                                      .transition()								// <-- Now with
+                                      .delay(function(d, i) {
+                                          return i * 100;
+                                      })
+                                      .duration(1000)
+                          .ease(d3.easeCircleIn)
+                            .text(function(d) {
+                                          return d;
+                                      })
+                                      .attr("x", function(d, i) {
+                                          return xScale(i) + xScale.bandwidth() / 2;
+                                      })
+                                      .attr("y", function(d) {
+                                          if(yScale(d)<=15) {
+                                              return h - yScale(d) - 2;
+                                          }else{
+                                              return h - yScale(d) + 14;
+                            }
+                                      })
+                                      .attr("fill", function (d) {
+                                          if(yScale(d)<=15){
+                                              return "black"
+                                          }else{
+                                              return "white";
+                                          }
+                                      });
+                              });
+                    
+                  </script>
+
+
+              
+        </div>
+        <div class="divleft">
+            Total Income: ${{0 + income.primary + income.passive}}
+          </div>
+        </div>
+
+
+    <script>
+      var app = angular.module('incomeApp', []);
+      app.controller('incomeCtrl', function($scope, $location, $http, $window) {
+        $scope.income = {
+        };
+        $scope.incomeSave = function(){
+          $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/incomeSave', JSON.stringify($scope.income));
+          $window.location.href = '/src/asset.html';
+        }
+      });
+    </script>
+
+</body>
+
+
+</html>
