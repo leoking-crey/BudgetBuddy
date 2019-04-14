@@ -65,18 +65,11 @@ body{
 }
 
 #form-div {
-    padding-left:35px;
-    padding-right:35px;
-    padding-top:35px;
-    padding-bottom:50px;
-    width: 440px;
-    float: left;
-    left: 50%;
-    position: absolute;
-  margin-top:30px;
-  margin-left: 60px;
-  max-height: 470px;
-  overflow-y: scroll;
+  margin-left: 300px;
+  margin-right: 300px;
+  width: 440px;
+  vertical-align: top;
+  margin-bottom: 150px;
 }
 
 
@@ -250,7 +243,7 @@ input:focus, textarea:focus {
   display: -webkit-inline-box;
   bottom: 0;
   position: absolute;
-  margin: 30px;
+  margin: 10px;
   margin-left:20%;
   font-size:28px;
   color:#fff
@@ -267,15 +260,35 @@ input:focus, textarea:focus {
         padding-right: 3%;
     }
 }
+.dropdown-toggle{
+  margin-top: 10px;
+  white-space: nowrap;
+  margin-left: 42px;
+  float: inherit;
+}
 
+.drop{
+  height:32px;
+  margin-left:22px;
+  background-color:#868686;
 
+  border-width: 3px;
+  color:white;
+  margin-top:5px;
+  width:42%;
+}
+
+.compare{
+  vertical-align: bottom;
+  margin-top: 80px;
+}
 
 section {
-  padding-top: 37vh;
+  padding-top: 50vh;
   padding-left: 19vh;
   border: 20px 20px 20px 20px;
 }
 h3 {
   margin: 20px;
-  color: #fe9f97;
+  color: #152e72;
 }
