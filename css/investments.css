@@ -257,9 +257,10 @@ input:focus, textarea:focus {
         left: 3%;
         margin-right: 0%;
         width: 88%;
+        width: 88%;
         margin-left: 0;
-        padding-left: 0%;
-        padding-right: 0%;
+        padding-left: 3%;
+        padding-right: 3%;
     }
 }
 .dropdown-toggle{
@@ -303,4 +304,5 @@ h3 {
   border-width: 3px;
   margin-top:5px;
   width:180px;
+
 }
