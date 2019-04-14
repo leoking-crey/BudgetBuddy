@@ -24,25 +24,25 @@
                 <div class="form-left">
                   <h2 style='color:white'>Assets</h2>
                   <p class="name">
-                    <input name="Checking" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="Checking Account" id="name" />
-                  </p>
+                      <input name="Checking" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" ng-model="assets.checking" ng-change="update()" placeholder="Checking Account" id="name" />
+                    </p>
 
                   <p class="age">
-                    <input name="Savings" type="number" class="validate[required,custom[number]] feedback-input" id="age" placeholder="Savings Account" />
+                      <input name="Savings" type="number" class="validate[required,custom[number]] feedback-input" id="age" ng-model="assets.saving" ng-change="update()"  placeholder="Savings Account" />
+                    </p>
+
+                  <p class="household">
+                      <input name="Emergency" type="number" class="validate[required,custom[number]] feedback-input" id="household" ng-model="assets.emergency" ng-change="update()"  placeholder="Emergency Fund" />
                   </p>
 
                   <p class="household">
-                      <input name="Emergency" type="number" class="validate[required,custom[number]] feedback-input" id="household" placeholder="Emergency Fund" />
-                  </p>
-
-                  <p class="household">
-                      <input name="Investment" type="number" class="validate[required,custom[number]] feedback-input" id="household" placeholder="Investment" />
+                      <input name="Investment" type="number" class="validate[required,custom[number]] feedback-input" id="household" ng-model="assets.investments" ng-change="update()"  placeholder="Investment" />
                   </p>
                   <p class="household">
-                      <input name="Home" type="number" class="validate[required,custom[number]] feedback-input" id="household" placeholder="Home Equity" />
+                      <input name="Home" type="number" class="validate[required,custom[number]] feedback-input" id="household" ng-model="assets.home" ng-change="update()"  placeholder="Home Equity" />
                   </p>
                   <p class="household">
-                      <input name="Fixed" type="number" class="validate[required,custom[number]] feedback-input" id="household" placeholder="Fixed Asset/Other" />
+                      <input name="Fixed" type="number" class="validate[required,custom[number]] feedback-input" id="household" ng-model="assets.fixed" ng-change="update()"  placeholder="Fixed Asset/Other" />
                   </p>
                 </div>
 
@@ -50,22 +50,22 @@
                     <div class="form-right">
                       <h2 style='color:white'>Liabilities</h2>
                       <p class="name">
-                        <input name="Student" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" placeholder="Student Loans" id="name" />
-                      </p>
+                          <input name="Student" type="number" class="validate[required,custom[onlyLetter],length[0,100]] feedback-input" ng-model="liabilities.studentln" ng-change="update()"  placeholder="Student Loans" id="name" />
+                        </p>
 
                       <p class="age">
-                        <input name="Car" type="number" class="validate[required,custom[number]] feedback-input" id="age" placeholder="Auto Loans" />
+                          <input name="Car" type="number" class="validate[required,custom[number]] feedback-input" id="age" ng-model="liabilities.autoln" ng-change="update()"  placeholder="Auto Loans" />
+                        </p>
+
+                      <p class="household">
+                          <input name="Credit" type="number" class="validate[required,custom[number]] feedback-input" id="household" ng-model="liabilities.creditln" ng-change="update()"  placeholder="Credit card Loans" />
                       </p>
 
                       <p class="household">
-                          <input name="Credit" type="number" class="validate[required,custom[number]] feedback-input" id="household" placeholder="Credit card Loans" />
-                      </p>
-
-                      <p class="household">
-                          <input name="Mortgage" type="number" class="validate[required,custom[number]] feedback-input" id="household" placeholder="Mortgage" />
+                          <input name="Mortgage" type="number" class="validate[required,custom[number]] feedback-input" id="household" ng-model="liabilities.mortageln" ng-change="update()"  placeholder="Mortgage" />
                       </p>
                       <p class="household">
-                          <input name="Other" type="number" class="validate[required,custom[number]] feedback-input" id="household" placeholder="Other Debt" />
+                          <input name="Other" type="number" class="validate[required,custom[number]] feedback-input" id="household" ng-model="liabilities.other" ng-change="update()" placeholder="Other Debt" />
                       </p>
 
                       <div class="submit">
@@ -77,7 +77,7 @@
               </form>
             </div>
             <div class="divleft">
-              <h3 name="networth" type="number" id="networth" placeholder="Net Worth"> Net Worth: ${{0 + $scope.expenseVal}}</h3>
+              Net Worth: ${{0 + assets.total - liabilities.total}}
             </div>
       </div>
 
@@ -85,21 +85,91 @@
   var app = angular.module('assetApp', []);
   app.controller('assetCtrl', function($scope, $location, $http, $window, $rootScope) {
     $scope.assets = {
+      total: 0
     };
-    $scope.expenses = {
+    $scope.liabilities = {
+      total: 0
     };
-    $scope.expenseselected = "";
-    $scope.incomeSelected = "";
-    $rootScope.expenseVal = 0;
-    $rootScope.incomeVal = 0;
+
+    $scope.update = function(){
+      $scope.assets.total = 0;
+      if($scope.assets.checking != null){
+        $scope.assets.total += $scope.assets.checking;
+      }
+      if($scope.assets.saving != null){
+        $scope.assets.total += $scope.assets.saving;
+      }
+      if($scope.assets.emergency != null){
+        $scope.assets.total += $scope.assets.emergency;
+      }
+      if($scope.assets.investments != null){
+        $scope.assets.total += $scope.assets.investments;
+      }
+      if($scope.assets.home != null){
+        $scope.assets.total += $scope.assets.home;
+      }
+      if($scope.assets.fixed != null){
+        $scope.assets.total += $scope.assets.fixed;
+      }
+
+      $scope.liabilities.total = 0;
+      if($scope.liabilities.studentln != null){
+        $scope.liabilities.total += $scope.liabilities.studentln;
+      }
+      if($scope.liabilities.autoln != null){
+        $scope.liabilities.total += $scope.liabilities.autoln;
+      }
+      if($scope.liabilities.creditln != null){
+        $scope.liabilities.total += $scope.liabilities.creditln;
+      }
+      if($scope.liabilities.mortageln != null){
+        $scope.liabilities.total += $scope.liabilities.mortageln;
+      }
+      if($scope.liabilities.other != null){
+        $scope.liabilities.total += $scope.liabilities.other;
+      }
+    };
+
     $scope.assetsSave = function(){
-      if($scope.income.primary == null){
-        $scope.income.primary = 0;
+      if($scope.assets.checking == null){
+        $scope.assets.checking = 0;
       }
-      if($scope.income.passive == null){
-        $scope.income.passive = 0;
+      if($scope.assets.saving == null){
+        $scope.assets.saving = 0;
       }
+      if($scope.assets.emergency == null){
+        $scope.assets.emergency = 0;
+      }
+      if($scope.assets.investments == null){
+        $scope.assets.investments = 0;
+      }
+      if($scope.assets.home == null){
+        $scope.assets.home = 0;
+      }
+      if($scope.assets.fixed == null){
+        $scope.assets.fixed = 0;
+      }
+      $scope.assets.total = 0 + $scope.assets.checking + $scope.assets.saving + $scope.assets.emergency + $scope.assets.investments + $scope.assets.home + $scope.assets.fixed;
+
+      if($scope.liabilities.studentln == null){
+        $scope.liabilities.studentln = 0;
+      }
+      if($scope.liabilities.autoln == null){
+        $scope.liabilities.autoln = 0;
+      }
+      if($scope.liabilities.creditln == null){
+        $scope.liabilities.creditln = 0;
+      }
+      if($scope.liabilities.mortageln == null){
+        $scope.liabilities.mortageln = 0;
+      }
+      if($scope.liabilities.other == null){
+        $scope.liabilities.other = 0;
+      }
+      $scope.liabilities.total = 0 + $scope.liabilities.studentln + $scope.liabilities.autoln + $scope.liabilities.creditln + $scope.liabilities.mortageln + $scope.liabilities.other;
+
       $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/assetSave', JSON.stringify($scope.assets));
+      $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/liabilitySave', JSON.stringify($scope.liabilities));
       $window.location.href = '/src/liability.html';
     };
   });
