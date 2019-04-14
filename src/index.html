@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BudgetBuddy</title>
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+
+
+  <header class="header">
+    <div ng-app="HomeApp" ng-ctrl="HomeCtrl">
+        <div class="logo-box">
+            <img src="../img/logo-white.png" alt="Logo" class="logo">
+        </div>
+        <div class="text-box">
+          <h1 class="heading-primary">
+            <span class="heading-primary-main">Financial Freedom</span>
+            <span class="heading-primary-sub">is where life happens</span>
+
+          </h1>
+                <a href="/src/introduction.html" class="btn btn-white">START HERE!</a>
+        </div>
+    </div>
+
+  </header>
+
+
+  <app-root></app-root>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $window) {
+      $scope.name= "name";
+    });
+  </script>
+</body>
+</html>

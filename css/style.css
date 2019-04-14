@@ -1,11 +1,8 @@
 /*
     COLORS:
-
     Light green: #7ed56f
     Medium green: #55c57a
     Dark green: #28b485
-
-
 */
 
 *{
@@ -21,7 +18,7 @@ body{
     line-height: 1.7;
     color: #777;
     padding: 30px;
-    
+
 
 }
 
@@ -78,7 +75,7 @@ body{
     animation-duration: 1s;
     animation-timing-function: ease-out;
 
-    
+
 }
 .heading-primary-sub{
     display: block;
@@ -86,7 +83,7 @@ body{
     font-weight: 400;
     letter-spacing: 17.4px;
     animation: moveInRight 1s ease-out;
-    
+
 }
 
 @keyframes moveInLeft{
@@ -148,3 +145,4 @@ body{
     background-color: #ffffff;
     color: #777;
 }
+

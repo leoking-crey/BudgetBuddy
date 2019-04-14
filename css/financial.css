@@ -16,17 +16,23 @@ body{
   font-weight: 400;
   font-size: 16px;
   line-height: 1.7;
-  color: #777;
-  padding: 30px;
+	height: 85vh;
+  background-image: linear-gradient(
+      to right bottom,
+      #a9e79e,
+      #28b485
+      );
+  background-size: cover;
+  background-position: top;
 
 
 }
 
-.header{
+#div-inside{
   height: 95vh;
   background-image: linear-gradient(
       to right bottom,
-      #7ed56f,
+      #a9e79e,
       #28b485
       ), url(../img/hero.jpg);
   background-size: cover;
@@ -63,14 +69,20 @@ body{
 	padding-right:35px;
 	padding-top:35px;
 	padding-bottom:50px;
-	width: 450px;
+	width: 650px;
 	float: left;
 	left: 50%;
 	position: absolute;
   margin-top:30px;
-  margin-left: -315px;
+  margin-left: 15px;
   max-height: 470px;
   overflow-y: scroll;
+}
+
+
+#form-left-div {
+
+
 }
 
 .feedback-input {
@@ -162,7 +174,7 @@ body{
 #housingexp,
 #utilitiesexp,
 #carexp,
-#insurranceexp,
+#insurrenceexp,
 #schoolexp,
 #groceryexp,
 #diningexp,
@@ -197,14 +209,14 @@ input:focus, textarea:focus {
   background-color: #1c717c;
   opacity: 0.9;
 	color:white;
-	font-size:22px;
-	padding-top: 1px;
-	padding-bottom: 1px;
+	font-size:24px;
+	padding-top:10px;
+	padding-bottom:10px;
 	-webkit-transition: all 0.3s;
 	-moz-transition: all 0.3s;
 	transition: all 0.3s;
   margin-top:-4px;
-  font-weight:545;
+  font-weight:700;
 }
 
 #button-blue:hover{
@@ -243,8 +255,12 @@ input:focus, textarea:focus {
 	}
 }
 
-a{
-  text-decoration: none;
-  text-align: center;
-  font-size: 10%;
+.generate{
+  height:32px;
+  margin-left:0px;
+  background-color:#868686;
+  color: #fff;
+  border-width: 3px;
+  margin-top:5px;
+  width:180px;
 }

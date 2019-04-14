@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+
+  <link rel="stylesheet" href="../css/investments.css">
+
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <title>Budget Buddy!</title>
+</head>
+    <body>
+        <h2 style="color:white; margin-left:130px; margin-top:20px;margin-right:300px; font-size:22px">Let's compute how much money you could save if you cut out a portion of your current monthly expenses
+            and invested it instead! First, choose a spending category to cut back on, or an asset you would like
+            to grow.
+        </h2>
+      <div class="div-inside" ng-app="investmentApp", ng-controller="investmentCtrl">
+        <div class="logo-box">
+
+            <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
+            <div id="form-div">
+
+
+              <form class="form" id="form1">
+                <h style='color:#ffffff'><b>Category to invest:</b></h>
+                <select class="drop" ng-model="selectedOption" ng-change="onexpenseselected()">
+                    <option value="" disabled selected>Choose a Category</option>
+                    <option class="dropdown-item" id='housing' ng-disabled="options.housing == null" >Housing</option>
+                    <option class="dropdown-item" id='utilities' ng-disabled="options.util == null">Utilities</option>
+                    <option class="dropdown-item" id='transportation' ng-disabled="options.trans == null">Transportation</option>
+                    <option class="dropdown-item" id='education' ng-disabled="options.school == null">Education</option>
+                    <option class="dropdown-item" id='grocery' ng-disabled="options.grocery == null">Grocery</option>
+                    <option class="dropdown-item" id='dining' ng-disabled="options.dining == null">Dining</option>
+                    <option class="dropdown-item" id='entertainment' ng-disabled="options.entertain == null">Entertainment</option>
+                    <option class="dropdown-item" id='insurance' ng-disabled="options.insurance == null">Insurance</option>
+                    <option class="dropdown-item" id='subscriptions' ng-disabled="options.subs == null">Subscriptions</option>
+                    <option class="dropdown-item" id='beauty' ng-disabled="options.beauty == null">Personal Care</option>
+                    <option class="dropdown-item" id='checking' ng-disabled="options.checking == null">Checking Account</option>
+                    <option class="dropdown-item" id='saving' ng-disabled="options.saving == null">Savings</option>
+                    <option class="dropdown-item" id='emergency' ng-disabled="options.emergency == null">Emergency Fund</option>
+                </select>
+
+
+
+                <p class="percentage" style=color:#ffffff> <b>Portion to invest</b>
+                  <input name="percentage" type="number" class="validate[required,custom[number]] feedback-input" ng-model="percentage" id="percentage" ng-model="percentage" placeholder="Percentage" />
+                </p>
+
+                <p class="interestRate" style=color:#ffffff> <b>Estimated growth rate (historical market rate = 8%, historical coupon rate = 3% - 4%)</b>
+                  <input name="interestRate" type="number" class="validate[required,custom[number]] feedback-input" id="interestRate" ng-model="interestRate" placeholder="Interest Rate %" />
+                </p>
+
+                <div>
+                <button class="generate" value="Generate Projection">Generate Projection</button>
+              </div>
+              <br>
+
+                <div class="submit">
+                  <input type="submit" id="button-blue" ng-click="next()" value=NEXT></input>
+                  <div class="ease"></div>
+                </div>
+              </form>
+
+
+
+
+
+              </div>
+
+
+
+
+                  <script type="text/javascript">
+
+                    //Width and height
+                    var w = 960;
+                    var h = 500;
+
+                    var dataset = [ 16, 12, 13, 19, 21, 25, 22, 18, 15, 13,
+                            11, 12, 15, 20, 18, 17, 16, 18, 23, 25,34,36,12,32,56,23,25,34,87,43,54 ];
+
+                    var xScale = d3.scaleBand()
+                            .domain(d3.range(dataset.length))
+                            .rangeRound([0, w])
+                            .paddingInner(0.08);
+
+                    var yScale = d3.scaleLinear()
+                            .domain([0, d3.max(dataset)])
+                            .range([50, h]);
+
+                    //Create SVG element
+                    var svg = d3.select("body")
+                          .append("svg")
+                          .attr("width", w)
+                          .attr("height", h);
+
+                    //Create bars
+                    svg.selectAll("rect")
+                       .data(dataset)
+                       .enter()
+                       .append("rect")
+                       .attr("x", function(d, i) {
+                           return xScale(i);
+                       })
+                       .attr("y", function(d) {
+                           return h - yScale(d);
+                       })
+                       .attr("width", xScale.bandwidth())
+                       .attr("height", function(d) {
+                           return yScale(d);
+                       })
+                       .attr("fill", function(d) {
+                        return "rgb(0, 0, " + Math.round(d * 10) + ")";
+                       });
+
+                    //Create labels
+                    svg.selectAll("text")
+                       .data(dataset)
+                       .enter()
+                       .append("text")
+                       .text(function(d) {
+                           return d;
+                       })
+                       .attr("text-anchor", "middle")
+                       .attr("x", function(d, i) {
+                           return xScale(i) + xScale.bandwidth() / 2;
+                       })
+                      .attr("y", function(d) {
+                                  if(yScale(d)<=15) {
+                                      return h - yScale(d) - 2;
+                                  }else{
+                                      return h - yScale(d) + 14;
+                                  }
+                              })
+                       .attr("font-family", "sans-serif")
+                       .attr("font-size", "11px")
+                       .attr("fill", function (d) {
+                         if(yScale(d)<=15){
+                             return "black"
+                         }else{
+                             return "white";
+                         }
+                             });
+
+
+                          //On click, update with new data
+                          d3.select("button")
+                              .on("click", function() {
+
+                                  //New values for dataset
+                                  var numValues = dataset.length;						//Count original length of dataset
+                                  dataset = [];  						 				//Initialize empty array
+
+
+                                  //the max value of the heights of the columns
+                                  //var maxValue = 10000;
+                                  for (var i = 0; i < numValues; i++) {				//Loop numValues times
+
+                                      //remember to create a variable for user's input for interest rate
+                                      //formula compounding: dataset[i] = datset[ i -1 ] * (1 + interest )
+                                      //for an (ith) year,  the value grew so far is : dataset[i + 1]
+                                      var currmoney;
+                                      if(i == 0){
+                                        currmoney = angular.element(document.querySelector('[ng-controller="investmentCtrl"]')).scope().optionVal;
+                                        currmoney = currmoney * angular.element(document.querySelector('[ng-controller="investmentCtrl"]')).scope().percentage / 100;
+                                        console.log(angular.element(document.querySelector('[ng-controller="investmentCtrl"]')).scope().optionVal);
+                                      }
+                                      else{
+                                        currmoney = dataset[i-1];
+                                      }
+                                      var growthRate = 0.03;
+                                      if(angular.element(document.querySelector('[ng-controller="investmentCtrl"]')).scope().interestRate != null){
+                                        growthRate = angular.element(document.querySelector('[ng-controller="investmentCtrl"]')).scope().interestRate / 100;
+                                      }
+                                      var newNumber = Math.round(currmoney * (1 + growthRate));
+                                      dataset.push(newNumber);			 			//Add new number to array
+                                  }
+
+
+                                  yScale.domain([0, d3.max(dataset)]);
+
+                                  //Update all rects
+                                  svg.selectAll("rect")
+                                      .data(dataset)
+                          .transition()
+                                      .delay(function(d, i) {
+                                          return i * 100;
+                                      })
+                          .duration(1000)
+                          .ease(d3.easeBounceOut)
+                                      .attr("y", function(d) {
+                                          return h - yScale(d);
+                                      })
+                                      .attr("height", function(d) {
+                                          return yScale(d);
+                                      })
+                                      .attr("fill", function(d) {
+                                          return "rgb(0,0," + Math.round(d * 10) + ")";
+                                      });
+
+
+
+                                  //Update all labels
+                                  svg.selectAll("text")
+                                      .data(dataset)
+                                      .transition()								// <-- Now with
+                                      .delay(function(d, i) {
+                                          return i * 100;
+                                      })
+                                      .duration(1000)
+                          .ease(d3.easeCircleIn)
+                            .text(function(d) {
+                                          return d;
+                                      })
+                                      .attr("x", function(d, i) {
+                                          return xScale(i) + xScale.bandwidth() / 2;
+                                      })
+                                      .attr("y", function(d) {
+                                          if(yScale(d)<=15) {
+                                              return h - yScale(d) - 2;
+                                          }else{
+                                              return h - yScale(d) + 14;
+                            }
+                                      })
+                                      .attr("fill", function (d) {
+                                          if(yScale(d)<=15){
+                                              return "black"
+                                          }else{
+                                              return "white";
+                                          }
+                                      });
+                              });
+
+                  </script>
+
+
+
+        </div>
+        </div>
+
+
+    <script>
+      var app = angular.module('investmentApp', []);
+      app.controller('investmentCtrl', function($scope, $location, $http, $window, $rootScope) {
+        $rootScope.options = {
+          housing:null,
+          grocery:null,
+          trans:null,
+          util:null,
+          insurance:null,
+          school:null,
+          dining:null,
+          entertain:null,
+          subs:null,
+          beauty:null,
+          checking:null,
+          saving:null,
+          emergency:null
+        };
+        $scope.selectedOption;
+        $rootScope.percentage;
+        $rootScope.interestRate;
+        $rootScope.optionVal;
+
+        $scope.optionGet = function(){
+          $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getexpenses")
+          .then(function(response) {
+            $scope.expenses = response.data;
+            if($scope.expenses.housing != null && $scope.expenses.housing != undefined){
+              $scope.options.housing = $scope.expenses.housing
+            }
+            if($scope.expenses.grocery != null && $scope.expenses.grocery != undefined){
+              $scope.options.grocery = $scope.expenses.grocery
+            }
+            if($scope.expenses.trans != null && $scope.expenses.trans != undefined){
+              $scope.options.trans = $scope.expenses.trans
+            }
+            if($scope.expenses.util != null && $scope.expenses.util != undefined){
+              $scope.options.util = $scope.expenses.util
+            }
+            if($scope.expenses.insurance != null && $scope.expenses.insurance != undefined){
+              $scope.options.insurance = $scope.expenses.insurance
+            }
+            if($scope.expenses.school != null && $scope.expenses.school != undefined){
+              $scope.options.school = $scope.expenses.school
+            }
+            if($scope.expenses.dining != null && $scope.expenses.dining != undefined){
+              $scope.options.dining = $scope.expenses.dining
+            }
+            if($scope.expenses.entertain != null && $scope.expenses.entertain != undefined){
+              $scope.options.entertain = $scope.expenses.entertain
+            }
+            if($scope.expenses.subs != null && $scope.expenses.subs != undefined){
+              $scope.options.subs = $scope.expenses.subs
+            }
+            if($scope.expenses.beauty != null && $scope.expenses.beauty != undefined){
+              $scope.options.beauty = $scope.expenses.beauty
+            }
+            console.log(response);
+            console.log(response.data);
+          });
+        };
+
+        $scope.assetsGet = function(){
+          $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getAssets")
+          .then(function(response) {
+            $scope.assets = response.data;
+            if($scope.assets.checking != null && $scope.assets.checking != undefined){
+              $scope.options.checking = $scope.assets.checking
+            }
+            if($scope.assets.saving != null && $scope.assets.saving != undefined){
+              $scope.options.saving = $scope.assets.saving
+            }
+            if($scope.assets.emergency != null && $scope.assets.emergency != undefined){
+              $scope.options.emergency = $scope.assets.emergency
+            }
+            console.log(response);
+            console.log(response.data);
+          });
+        };
+
+        $scope.optionGet();
+        $scope.assetsGet();
+
+        $scope.onexpenseselected = function(){
+          switch($scope.selectedOption){
+            case "Housing":
+              $scope.optionVal = $scope.options.housing;
+              break;
+            case "Utilities":
+              $scope.optionVal = $scope.options.util;
+              break;
+            case "Transportation":
+              $scope.optionVal = $scope.options.trans;
+              break;
+            case "Education":
+              $scope.optionVal = $scope.options.school;
+              break;
+            case "Grocery":
+              $scope.optionVal = $scope.options.grocery;
+              break;
+            case "Dining":
+              $scope.optionVal = $scope.options.dining;
+              break;
+            case "Entertainment":
+              $scope.optionVal = $scope.options.entertain;
+              break;
+            case "Insurance":
+              $scope.optionVal = $scope.options.insurance;
+              break;
+            case "Subscriptions":
+              $scope.optionVal = $scope.options.subs;
+              break;
+            case "Beauty":
+              $scope.optionVal = $scope.options.beauty;
+              break;
+            case "Checking Account":
+              $scope.optionVal = $scope.options.checking;
+              break;
+            case "Savings":
+              $scope.optionVal = $scope.options.saving;
+              break;
+            case "Emergency Fund":
+              $scope.optionVal = $scope.options.emergency;
+              break;
+            default:
+              console.log('error!');
+          }
+
+
+
+      $scope.next = function(){
+          $window.location.href = '/src/financial_goal_chart.html';
+      };
+    };
+  });
+    </script>
+
+</body>
+
+
+</html>

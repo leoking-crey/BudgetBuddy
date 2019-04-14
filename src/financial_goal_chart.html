@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+    <script src="financial.js" type="text/javascript"></script>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="../css/financial.css">
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+    <style>
+        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+
+    </style>
+</head>
+<body>
+
+<div>
+
+        <header class="header" ng-app="financialApp" ng-controller="financialCtrl">
+            <div class="div-inside">
+                <div class="logo-box">
+                    <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
+
+                    <h2 style="color:#fff">How close are you to your financial goals?</h2>
+                    <button ng-click="Updater()" class="generate">Generate Statitics</button>
+                    <br><br><br><br><br><h style="color:#fff; margin-top:10000px; margin-left:490px">Financial Freedom Index</h>
+
+
+                </div>
+              </div>
+
+            </header>
+
+<svg id="fillgauge1" width="97%" height="250"></svg>
+<svg id="fillgauge2" width="19%" height="250"></svg>
+<svg id="fillgauge3" width="19%" height="250"></svg>
+<svg id="fillgauge4" width="19%" height="250"></svg>
+<svg id="fillgauge5" width="19%" height="250"></svg>
+<svg id="fillgauge6" width="19%" height="250"></svg>
+
+<div>
+    <h style="color:#fff; margin-left:30px; margin-right:125px">Debt to Income Ratio</h>
+    <h style="color:#fff; margin-right:135px">Savings Rate</h>
+    <h style="color:#fff; margin-right:130px">Retirement Savings</h>
+    <h style="color:#fff; margin-right:130px">Emergency Savings</h>
+    <h style="color:#fff; margin-right:120px">Credit score</h>
+
+
+</div>
+
+
+<script language="JavaScript">
+   var app = angular.module('financialApp', []);
+    app.controller('financialCtrl', function($scope, $location, $http, $window, $rootScope) {
+      $rootScope.assets = {
+
+      };
+      $rootScope.income = {
+
+      };
+      $rootScope.options = {
+
+      };
+      $rootScope.expenses = {
+
+      };
+      $rootScope.passive = 0;
+      $rootScope.primary = 0;
+      $rootScope.totalliabilities = 0;
+      $rootScope.totalexpense = 0;
+      $rootScope.investments = 0;
+      $rootScope.emergency = 0;
+
+      $rootScope.expenseGet = function(){
+        $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getexpenses")
+        .then(function(response) {
+          $scope.expenses = response.data;
+          console.log(response.data);
+          if($scope.expenses.housing != null && $scope.expenses.housing != undefined){
+              $scope.options.housing = $scope.expenses.housing
+              $scope.totalexpense += $scope.options.housing
+            }
+            if($scope.expenses.grocery != null && $scope.expenses.grocery != undefined){
+              $scope.options.grocery = $scope.expenses.grocery
+              $scope.totalexpense += $scope.options.grocery
+            }
+            if($scope.expenses.trans != null && $scope.expenses.trans != undefined){
+              $scope.options.trans = $scope.expenses.trans
+              $scope.totalexpense += $scope.options.trans
+            }
+            if($scope.expenses.util != null && $scope.expenses.util != undefined){
+              $scope.options.util = $scope.expenses.util
+              $scope.totalexpense += $scope.options.util
+            }
+            if($scope.expenses.insurance != null && $scope.expenses.insurance != undefined){
+              $scope.options.insurance = $scope.expenses.insurance
+              $scope.totalexpense += $scope.options.insurance
+            }
+            if($scope.expenses.school != null && $scope.expenses.school != undefined){
+              $scope.options.school = $scope.expenses.school
+              $scope.totalexpense += $scope.options.school
+            }
+            if($scope.expenses.dining != null && $scope.expenses.dining != undefined){
+              $scope.options.dining = $scope.expenses.dining
+              $scope.totalexpense += $scope.options.dining
+            }
+            if($scope.expenses.entertain != null && $scope.expenses.entertain != undefined){
+              $scope.options.entertain = $scope.expenses.entertain
+              $scope.totalexpense += $scope.options.entertain
+            }
+            if($scope.expenses.subs != null && $scope.expenses.subs != undefined){
+              $scope.options.subs = $scope.expenses.subs
+              $scope.totalexpense += $scope.options.subs
+            }
+            if($scope.expenses.beauty != null && $scope.expenses.beauty != undefined){
+              $scope.options.beauty = $scope.expenses.beauty
+              $scope.totalexpense += $scope.options.beauty
+            }
+          console.log('primary:');
+          console.log($scope.primary);
+          console.log(response.data);
+
+        });
+      };
+
+      $rootScope.incomeGet = function(){
+        $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getIncome")
+        .then(function(response) {
+          $scope.income = response.data;
+          console.log(response.data);
+          if($scope.income.primary != null && $scope.income.primary != undefined){
+            $scope.primary = $scope.income.primary;
+          }
+          if($scope.income.passive != null && $scope.income.passive != undefined){
+            $scope.passive = $scope.income.passive;
+          }
+          console.log('primary:');
+          console.log($scope.primary);
+          console.log(response.data);
+
+        });
+      };
+
+      $rootScope.assetsGet = function(){
+        $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getAssets")
+        .then(function(response) {
+          $scope.income = response.data;
+          console.log(response.data);
+          if($scope.income.investments != null && $scope.income.investments != undefined){
+            $scope.investments = $scope.income.investments;
+          }
+          if($scope.income.emergency != null && $scope.income.emergency != undefined){
+            $scope.emergency = $scope.income.emergency;
+          }
+
+          console.log('primary:');
+          console.log($scope.primary);
+          console.log(response.data);
+
+        });
+      };
+
+      $rootScope.liabilitiesGet = function(){
+        $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getLiabilities")
+        .then(function(response) {
+          $scope.income = response.data;
+          console.log(response.data);
+          if($scope.income.total != null && $scope.income.total != undefined){
+            $scope.totalliabilities = $scope.income.total;
+          }
+          /*if($scope.income.studentln != null && $scope.income.studentln != undefined){
+            $scope.totalliabilities += $scope.income.studentln;
+          }
+          if($scope.income.autoln != null && $scope.income.autoln != undefined){
+            $scope.totalliabilities += $scope.income.autoln;
+          }
+          if($scope.income.mortgageln != null && $scope.income.mortgageln != undefined){
+            $scope.totalliabilities += $scope.income.mortgageln;
+          }
+          if($scope.income.other != null && $scope.income.other != undefined){
+            $scope.totalliabilities += $scope.income.other;
+          }
+          if($scope.income.creditln != null && $scope.income.creditln != undefined){
+            $scope.totalliabilities += $scope.income.creditln;
+          }*/
+
+          console.log(response);
+          console.log(response.data);
+
+        });
+      };
+
+
+
+
+      console.log("outside");
+      console.log($scope.primary);
+      $rootScope.Updater = function(){
+    //console.log(angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive)
+    //angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive = 0;
+    //Financial Freedome ratio  (side cash + passive income + (savings per month of course)  / salary monthly
+    //if(angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive != undefined){
+    //var val = angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive / angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().primary;
+    //}
+    console.log($scope.passive);
+    console.log('PRIMARY:');
+    console.log($scope.primary);
+    console.log($scope.totalliabilities)
+    var test;
+    if($scope.primary == 0){
+      test = 0;
+    }
+    else{
+    test =  $scope.passive / $scope.primary;
+    }
+    var gauge1 = loadLiquidFillGauge("fillgauge1", test);
+    var config1 = liquidFillGaugeDefaultSettings();
+    config1.circleColor = "#FF7777";
+    config1.textColor = "#FF4444";
+    config1.waveTextColor = "#FFAAAA";
+    config1.waveColor = "#FFDDDD";
+    config1.circleThickness = 0.2;
+    config1.textVertPosition = 0.2;
+    config1.waveAnimateTime = 1000;
+
+    //Debt-to-income ratio
+    var debttoincome;
+    test = 0;
+    if($scope.primary + $scope.passive != 0){
+    test = $scope.totalliabilities / ($scope.primary + $scope.passive);
+    }
+    debttoincome = test;
+    console.log(test)
+    var gauge2= loadLiquidFillGauge("fillgauge2", test, config1);
+    var config2 = liquidFillGaugeDefaultSettings();
+    config2.circleColor = "#D4AB6A";
+    config2.textColor = "#553300";
+    config2.waveTextColor = "#805615";
+    config2.waveColor = "#AA7D39";
+    config2.circleThickness = 0.1;
+    config2.circleFillGap = 0.2;
+    config2.textVertPosition = 0.8;
+    config2.waveAnimateTime = 2000;
+    config2.waveHeight = 0.3;
+    config2.waveCount = 1;
+
+
+    //Savings Rate     (Salary - expense per month) / salary
+    test = 0;
+    if($scope.primary != 0){
+      test = ($scope.primary - $scope.totalexpense)/$scope.primary;
+    }
+    var gauge3 = loadLiquidFillGauge("fillgauge3", test, config2);
+    var config3 = liquidFillGaugeDefaultSettings();
+    config3.textVertPosition = 0.8;
+    config3.waveAnimateTime = 5000;
+    config3.waveHeight = 0.15;
+    config3.waveAnimate = false;
+    config3.waveOffset = 0.25;
+    config3.valueCountUp = false;
+    config3.displayPercent = false;
+
+    //Retirement Savings so far on the score of 100     (retirement / goal ) * 100
+    test = ($scope.investments / ($scope.primary * 12 * 30))*100
+    var gauge4 = loadLiquidFillGauge("fillgauge4", test, config3);
+    var config4 = liquidFillGaugeDefaultSettings();
+    config4.circleThickness = 0.15;
+    config4.circleColor = "#808015";
+    config4.textColor = "#555500";
+    config4.waveTextColor = "#FFFFAA";
+    config4.waveColor = "#AAAA39";
+    config4.textVertPosition = 0.8;
+    config4.waveAnimateTime = 1000;
+    config4.waveHeight = 0.05;
+    config4.waveAnimate = true;
+    config4.waveRise = false;
+    config4.waveHeightScaling = false;
+    config4.waveOffset = 0.25;
+    config4.textSize = 0.75;
+    config4.waveCount = 3;
+
+    //Emergency Savings achievement       ( emergency fund / 6 months of expense )
+    test = 0
+    console.log('emergency');
+    console.log($scope.emergency);
+    if($scope.totalexpense != 0){
+      test = ($scope.emergency / (6 * $scope.totalexpense))*100;
+    }
+    console.log(test);
+    var gauge5 = loadLiquidFillGauge("fillgauge5", test, config4);
+    var config5 = liquidFillGaugeDefaultSettings();
+    config5.circleThickness = 0.4;
+    config5.circleColor = "#6DA398";
+    config5.textColor = "#0E5144";
+    config5.waveTextColor = "#6DA398";
+    config5.waveColor = "#246D5F";
+    config5.textVertPosition = 0.52;
+    config5.waveAnimateTime = 5000;
+    config5.waveHeight = 0;
+    config5.waveAnimate = false;
+    config5.waveCount = 2;
+    config5.waveOffset = 0.25;
+    config5.textSize = 1.2;
+    config5.minValue = 30;
+    config5.maxValue = 150
+    config5.displayPercent = false;
+
+    //Current credit score
+    test = debttoincome * 750 / 4
+    var gauge6 = loadLiquidFillGauge("fillgauge6", test, config5);
+    };
+
+    $rootScope.incomeGet() ;
+      $rootScope.liabilitiesGet();
+      $rootScope.expenseGet();
+      $rootScope.assetsGet();
+});
+
+
+/*
+function Updater(pass, prim, totalliabilities){
+    //console.log(angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive)
+    //angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive = 0;
+    //Financial Freedome ratio  (side cash + passive income + (savings per month of course)  / salary monthly
+    //if(angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive != undefined){
+    //var val = angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().passive / angular.element(document.querySelector('[ng-controller="financialCtrl"]')).scope().primary;
+    //}
+    console.log(pass);
+    console.log('PRIMARY:');
+    console.log(prim);
+    console.log(totalliabilities)
+    var test;
+    if(prim == 0){
+      test = 0;
+    }
+    else{
+    test =  pass / prim;
+    }
+    var gauge1 = loadLiquidFillGauge("fillgauge1", test);
+    var config1 = liquidFillGaugeDefaultSettings();
+    config1.circleColor = "#FF7777";
+    config1.textColor = "#FF4444";
+    config1.waveTextColor = "#FFAAAA";
+    config1.waveColor = "#FFDDDD";
+    config1.circleThickness = 0.2;
+    config1.textVertPosition = 0.2;
+    config1.waveAnimateTime = 1000;
+
+    //Debt-to-income ratio
+    var gauge2= loadLiquidFillGauge("fillgauge2", 28, config1);
+    var config2 = liquidFillGaugeDefaultSettings();
+    config2.circleColor = "#D4AB6A";
+    config2.textColor = "#553300";
+    config2.waveTextColor = "#805615";
+    config2.waveColor = "#AA7D39";
+    config2.circleThickness = 0.1;
+    config2.circleFillGap = 0.2;
+    config2.textVertPosition = 0.8;
+    config2.waveAnimateTime = 2000;
+    config2.waveHeight = 0.3;
+    config2.waveCount = 1;
+
+
+    //Savings Rate     (Salary - expense per month) / salary
+    var gauge3 = loadLiquidFillGauge("fillgauge3", 60.1, config2);
+    var config3 = liquidFillGaugeDefaultSettings();
+    config3.textVertPosition = 0.8;
+    config3.waveAnimateTime = 5000;
+    config3.waveHeight = 0.15;
+    config3.waveAnimate = false;
+    config3.waveOffset = 0.25;
+    config3.valueCountUp = false;
+    config3.displayPercent = false;
+
+    //Retirement Savings so far on the score of 100     (retirement / goal ) * 100
+    var gauge4 = loadLiquidFillGauge("fillgauge4", 20, config3);
+    var config4 = liquidFillGaugeDefaultSettings();
+    config4.circleThickness = 0.15;
+    config4.circleColor = "#808015";
+    config4.textColor = "#555500";
+    config4.waveTextColor = "#FFFFAA";
+    config4.waveColor = "#AAAA39";
+    config4.textVertPosition = 0.8;
+    config4.waveAnimateTime = 1000;
+    config4.waveHeight = 0.05;
+    config4.waveAnimate = true;
+    config4.waveRise = false;
+    config4.waveHeightScaling = false;
+    config4.waveOffset = 0.25;
+    config4.textSize = 0.75;
+    config4.waveCount = 3;
+
+    //Emergency Savings achievement       ( emergency fund / 6 months of expense )
+    var gauge5 = loadLiquidFillGauge("fillgauge5", 60.44, config4);
+    var config5 = liquidFillGaugeDefaultSettings();
+    config5.circleThickness = 0.4;
+    config5.circleColor = "#6DA398";
+    config5.textColor = "#0E5144";
+    config5.waveTextColor = "#6DA398";
+    config5.waveColor = "#246D5F";
+    config5.textVertPosition = 0.52;
+    config5.waveAnimateTime = 5000;
+    config5.waveHeight = 0;
+    config5.waveAnimate = false;
+    config5.waveCount = 2;
+    config5.waveOffset = 0.25;
+    config5.textSize = 1.2;
+    config5.minValue = 30;
+    config5.maxValue = 150
+    config5.displayPercent = false;
+
+    //Current credit score
+    var gauge6 = loadLiquidFillGauge("fillgauge6", 750, config5);
+    }*/
+
+</script>
+</div>
+
+
+<script>
+
+  </script>
+
+
+</body>
+</html>

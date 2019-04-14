@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+  <link rel="stylesheet" href="../css/income.css">
+
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <title>Budget Buddy!</title>
+</head>
+    <body>
+      <div class="div-inside" ng-app="incomeApp", ng-controller="incomeCtrl">
+        <div class="logo-box">
+            <h2 style="color:#fff; margin-left:200px">Explore the Impact of your Expenses on your Income!</h2>
+
+            <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
+            <div id="form-div">
+              <form class="form" id="form1">
+
+                <p class="primaryinc" style='color:white'> <b>Primary Income</b>
+                  <input name="primaryinc" type="number" class="validate[required,custom[number]] feedback-input" ng-model="income.primary" placeholder="Primary Monthly Income (after tax)" id="primaryinc" />
+                </p>
+
+                <p class="passiveinc" style='color:white'> <b>Passive Income</b>
+                  <input name="passiveinc" type="number" class="validate[required,custom[number]] feedback-input" id="passiveinc" ng-model="income.passive" placeholder="Passive Monthly Income (side job)" />
+                </p>
+
+
+
+                <div class="submit">
+                  <input type="submit" id="button-blue" ng-click="incomeSave()" value=NEXT></input>
+                  <div class="ease"></div>
+                </div>
+              </form>
+              <form>
+              <div class="dropdown">
+
+
+                  <select class="drop" style="border-color:#c48811;" ng-model="expenseselected" ng-change="onexpenseselected()">
+                    <option value="" disabled selected>Expense Option</option>
+                    <option class="dropdown-item" id='housing' >Housing</option>
+                    <option class="dropdown-item" id='utilities'>Utilities</option>
+                    <option class="dropdown-item" id='transportation'>Transportation</option>
+                    <option class="dropdown-item" id='education'>Education</option>
+                    <option class="dropdown-item" id='grocery'>Grocery</option>
+                    <option class="dropdown-item" id='dining'>Dining</option>
+                    <option class="dropdown-item" id='entertainment'>Entertainment</option>
+                    <option class="dropdown-item" id='insurance'>Insurance</option>
+                    <option class="dropdown-item" id='subscriptions'>Subscriptions</option>
+                    <option class="dropdown-item" id='beauty'>Personal Care</option>
+                    <option class="dropdown-item" id='total'>Total Expenses</option>
+                  </select>
+
+
+                  <select class="drop" style="border-color:#23828f;" ng-model="incomeselected" ng-change="onincomeselected()">
+                      <option value="" disabled selected>Income Source</option>
+                    <option class="dropdown-item" id='primary'>Primary</option>
+                    <option class="dropdown-item" id='passive'>Passive</option>
+                    <option class="dropdown-item" id='total'>Total Income</option>
+                  </select>
+
+
+                </div>
+              </form>
+              </div>
+
+        </div>
+
+        <div class="compare">
+            <section class="stats">
+
+                <h3>A comparision between your expense source and earnings power</h3>
+                <svg width="900" height="100">
+                    <g id="vis"></g>
+                </svg>
+            </section>
+
+
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <!-- d3 code -->
+        <script src="speed.js" charset="utf-8"></script>
+        <!-- render code -->
+        <script>
+          render([50, 50])
+          //This is where two variables comes in comparision!!!!!!
+            // render an update
+            d3.interval(function() {
+              angular.element(document.querySelector('[ng-controller="incomeCtrl"]')).scope().onincomeselected();
+            //specify what two variables to compare
+                let v1 = angular.element(document.querySelector('[ng-controller="incomeCtrl"]')).scope().expenseVal
+                let v2 = angular.element(document.querySelector('[ng-controller="incomeCtrl"]')).scope().incomeVal
+                if(v1 == null || v2 == null || (v1 == 0 && v2 == 0)){
+                  return render([50,50]);
+                }
+                v1 = Math.round((v1 / v2) * 100);
+                v2 = 100 - v1;
+                return render([v1, v2]);
+            }, 1000);
+        </script>
+
+
+      </div>
+    </div>
+
+
+    <script>
+      var app = angular.module('incomeApp', []);
+      app.controller('incomeCtrl', function($scope, $location, $http, $window, $rootScope) {
+        $scope.income = {
+        };
+        $scope.expenses = {
+        };
+        $scope.expenseselected = "";
+        $scope.incomeSelected = "";
+        $rootScope.expenseVal = 0;
+        $rootScope.incomeVal = 0;
+        $scope.incomeSave = function(){
+          if($scope.income.primary == null){
+            $scope.income.primary = 0;
+          }
+          if($scope.income.passive == null){
+            $scope.income.passive = 0;
+          }
+          $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/incomeSave', JSON.stringify($scope.income)).then(function(response){
+            console.log('success');
+          });
+          $window.location.href = '/src/asset.html';
+        };
+        $scope.expenseGet = function(){
+          $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getexpenses")
+          .then(function(response) {
+            $scope.expenses = response.data;
+            if($scope.expenses.housing == null || $scope.expenses.housing == undefined){
+              $scope.expenses.housing = 0
+            }
+            if($scope.expenses.grocery == null || $scope.expenses.grocery == undefined){
+              $scope.expenses.grocery = 0
+            }
+            if($scope.expenses.trans == null || $scope.expenses.trans == undefined){
+              $scope.expenses.trans = 0
+            }
+            if($scope.expenses.util == null || $scope.expenses.util == undefined){
+              $scope.expenses.util = 0
+            }
+            if($scope.expenses.insurance == null || $scope.expenses.insurance == undefined){
+              $scope.expenses.insurance = 0
+            }
+            if($scope.expenses.school == null || $scope.expenses.school == undefined){
+              $scope.expenses.school = 0
+            }
+            if($scope.expenses.dining == null || $scope.expenses.dining == undefined){
+              $scope.expenses.dining = 0
+            }
+            if($scope.expenses.entertain == null || $scope.expenses.entertain == undefined){
+              $scope.expenses.entertain = 0
+            }
+            if($scope.expenses.subs == null || $scope.expenses.subs == undefined){
+              $scope.expenses.subs = 0
+            }
+            if($scope.expenses.beauty == null || $scope.expenses.beauty == undefined){
+              $scope.expenses.beauty = 0
+            }
+            console.log(response);
+            console.log(response.data);
+          });
+        };
+        $scope.expenseGet();
+
+        $scope.onexpenseselected = function(){
+          console.log($scope.expenseselected);
+          switch($scope.expenseselected){
+            case "Housing":
+              $scope.expenseVal = $scope.expenses.housing;
+              break;
+            case "Utilities":
+              $scope.expenseVal = $scope.expenses.util;
+              break;
+            case "Transportation":
+              $scope.expenseVal = $scope.expenses.trans;
+              break;
+            case "Education":
+              $scope.expenseVal = $scope.expenses.school;
+              break;
+            case "Grocery":
+              $scope.expenseVal = $scope.expenses.grocery;
+              break;
+            case "Dining":
+              $scope.expenseVal = $scope.expenses.dining;
+              break;
+            case "Entertainment":
+              $scope.expenseVal = $scope.expenses.entertain;
+              break;
+            case "Insurance":
+              $scope.expenseVal = $scope.expenses.insurance;
+              break;
+            case "Subscriptions":
+              $scope.expenseVal = $scope.expenses.subs;
+              break;
+            case "Beauty":
+              $scope.expenseVal = $scope.expenses.beauty;
+              break;
+            case "Total Expenses":
+              $scope.expenseVal = 0 + $scope.expenses.housing + $scope.expenses.util + $scope.expenses.trans + $scope.expenses.school + $scope.expenses.grocery + $scope.expenses.dining + $scope.expenses.entertain + $scope.expenses.insurance + $scope.expenses.subs + $scope.expenses.beauty;
+              console.log($scope.expenseVal);
+              break;
+            default:
+              console.log('error!');
+          }
+          console.log($scope.expenseVal);
+
+        }
+
+      $rootScope.onincomeselected = function(){
+          if($scope.income.primary == null || $scope.income.primary == undefined){
+            $scope.income.primary = 0;
+          }
+          if($scope.income.passive == null || $scope.income.passive == undefined){
+            $scope.income.passive = 0;
+          }
+          console.log($scope.incomeselected);
+          switch($scope.incomeselected){
+            case "Primary":
+              $scope.incomeVal = $scope.income.primary;
+              break;
+            case "Passive":
+              $scope.incomeVal = $scope.income.passive;
+              break;
+            case "Total Income":
+              $scope.incomeVal = 0 + $scope.income.primary + $scope.income.passive;
+              console.log($scope.incomeVal);
+              break;
+            default:
+              console.log('error!');
+          }
+          console.log($scope.incomeVal);
+        }
+
+    });
+
+    </script>
+
+</body>
+
+
+</html>

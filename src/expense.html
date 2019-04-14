@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+  <link rel="stylesheet" href="../css/expense.css">
+
+  <link rel="shortcut icon" type="img/png" href="../img/favicon.png">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+  <title>Budget Buddy!</title>
+</head>
+    <body>
+      <h2 style="color:#fff; margin-left:200px">Enter Your Average Monthly Expenses</h2>
+      <div class="div-inside" ng-app="expenseApp", ng-controller="expenseCtrl">
+        <div class="logo-box">
+            <img src="../img/logo-white.png" alt="Logo" class="logo" class="logo">
+        </div class="outerbounds">
+            <div id="form-div">
+              <form class="form" id="form1">
+
+                <p class="housingexp" style=color:#1f77b4 > <b>Housing</b>
+                  <input name="housingexp" type="number" class="validate[required,custom[number]] feedback-input" ng-model="expenses.housing" placeholder="Housing (mortgage payments, rent)" id="housingexp" />
+                </p>
+
+                <p class="utilitiesexp"style=color:#ff7f0e> <b>Utilities</b>
+                  <input name="utilitiesexp" type="number" class="validate[required,custom[number]] feedback-input" id="utilitiesexp" ng-model="expenses.util" placeholder="Utilities (electricity, gas, water)" />
+                </p>
+
+                <p class="carexp" style=color:#1f701f> <b>Transportation</b>
+                  <input name="carexp" type="number" class="validate[required,custom[number]] feedback-input" id="carexp" ng-model="expenses.trans" placeholder="Transportation (car loan, gas, bus pass)" />
+                </p>
+
+                <p class="schoolexp" style=color:#d62728> <b>Education</b>
+                  <input name="schoolexp" type="number" class="validate[required,custom[number]] feedback-input" id="schoolexp" ng-model="expenses.school" placeholder="School (tuition, student loans, supplies)" />
+                </p>
+
+                <p class="groceryexp" style=color:#765297><b>Groceries</b>
+                    <input name="groceryexp" type="number" class="validate[required,custom[number]] feedback-input" id="groceryexp" ng-model="expenses.grocery" placeholder="Grocery (food and essentials)" />
+                </p>
+
+                <p class="diningexp" style=color:#794940><b>Dining Out</b>
+                  <input name="diningexp" type="number" class="validate[required,custom[number]] feedback-input" id="diningexp" ng-model="expenses.dining" placeholder="Dining Out (restaurant, takeout/delivery)" />
+                </p>
+
+                <p class="entertainmentexp" style=color:#b9619f> <b>Entertainment</b>
+                  <input name="entertainmentexp" type="number" class="validate[required,custom[number]] feedback-input" id="entertainmentexp" ng-model="expenses.entertain" placeholder="Entertainment (movies, drinks, events)" />
+                </p>
+
+                <p class="insuranceexp" style=color:#5a5959> <b>Insurance</b>
+                  <input name="insuranceexp" type="number" class="validate[required,custom[number]] feedback-input" id="insuranceexp" ng-model="expenses.insurance" placeholder="Insurance (health, dental, life, pet)" />
+                </p>
+
+                <p class="subscriptionexp" style=color:#8f8f19> <b>Subscriptions</b>
+                  <input name="subscriptionexp" type="number" class="validate[required,custom[number]] feedback-input" id="subscriptionexp" ng-model="expenses.subs" placeholder="Subscriptions (netflix, magazines, stitchfix)" />
+                </p>
+
+                <p class="beautyexp" style=color:#1295a3> <b>Personal Care</b>
+                    <input name="beautyexp" type="number" class="validate[required,custom[number]] feedback-input" id="beautyexp" ng-model="expenses.beauty" placeholder="Personal Care (hair, makeup, nails)" />
+                </p>
+
+
+
+                <div class="submit">
+                  <input type="submit" id="button-blue" ng-click="expenseSave()" value=NEXT></input>
+                  <div class="ease"></div>
+                </div>
+              </form>
+
+
+              <div id="form-main">
+
+                  <div id="form-left-div">
+
+
+                          <script src="https://d3js.org/d3.v3.min.js"></script>
+                          <div>
+
+                          </div>
+                          <script>
+                          var width = 860,
+                              height = 600 - 29; // adjust for height of input bar div
+                          var color = d3.scale.category10();
+                          // draw and append the container
+                          var svg = d3.select("body").append("svg")
+                            .attr("width", width).attr("height", height);
+                          // set the thickness of the inner and outer radii
+                          var min = Math.min(width, height);
+                          var oRadius = (Math.min(width, height) / 2 - 10)*0.9 ;
+                          var iRadius = (Math.min(width, height) / 2 - 10)* 0.6 ;
+                          // construct default pie laoyut
+                          var pie = d3.layout.pie().value(function(d){ return d; }).sort(null);
+                          // construct arc generator
+                          var arc = d3.svg.arc()
+                            .outerRadius(oRadius)
+                            .innerRadius(iRadius);
+                          // creates the pie chart container
+                          var g = svg.append('g')
+                          var g = svg.append('g')
+                            .attr('transform', function(){
+                              if ( window.innerWidth >= 960 ) var shiftWidth = width / 2;
+                              if ( window.innerWidth < 960 ) var shiftWidth = width / 3;
+                              return 'translate(' + shiftWidth + ',' + height / 2 + ')';
+                            })
+                          // generate random data
+
+                          var data = [document.getElementById("housingexp").value, document.getElementById("utilitiesexp").value, document.getElementById("carexp").value,
+                          document.getElementById("schoolexp").value,
+                          document.getElementById("groceryexp").value,
+                          document.getElementById("diningexp").value,
+                          document.getElementById("entertainmentexp").value,
+                          document.getElementById("insuranceexp").value,
+                          document.getElementById("subscriptionexp").value,
+                          document.getElementById("beautyexp").value
+                      ];
+
+                          // enter data and draw pie chart
+                          var path = g.datum(data).selectAll("path")
+                            .data(pie)
+                            .enter().append("path")
+                              .attr("class","piechart")
+                              .attr("fill", function(d,i){ return color(i); })
+                              .attr("d", arc)
+                              .each(function(d){ this._current = d; })
+
+
+                          function render(){
+                            data = [document.getElementById("housingexp").value, document.getElementById("utilitiesexp").value, document.getElementById("carexp").value,
+                          document.getElementById("schoolexp").value,
+                          document.getElementById("groceryexp").value,
+                          document.getElementById("diningexp").value,
+                          document.getElementById("entertainmentexp").value,
+                          document.getElementById("insuranceexp").value,
+                          document.getElementById("subscriptionexp").value,
+                          document.getElementById("beautyexp").value
+                      ];
+                            // generate new random data
+                            // add transition to new path
+                            g.datum(data).selectAll("path").data(pie).transition().duration(1000).attrTween("d", arcTween)
+                            // add any new paths
+                            g.datum(data).selectAll("path")
+                              .data(pie)
+                            .enter().append("path")
+                              .attr("class","piechart")
+                              .attr("fill", function(d,i){ return color(i); })
+                              .attr("d", arc)
+                              .each(function(d){ this._current = d; })
+                            // remove data not being used
+                            g.datum(data).selectAll("path")
+                              .data(pie).exit().remove();
+                          }
+                          render();
+
+                          //render every 2 seconds using setInterval
+                          setInterval(render,1000);
+                          function makeData(size){
+                            return d3.range(size).map(function(item){
+                             return Math.random()*100;
+                            });
+                          };
+
+
+
+                          // Store the displayed angles in _current.
+                          // Then, interpolate from _current to the new angles.
+                          // During the transition, _current is updated in-place by d3.interpolate.
+                          function arcTween(a) {
+                            var i = d3.interpolate(this._current, a);
+                            this._current = i(0);
+                            return function(t) {
+                              return arc(i(t));
+                            };
+                          }
+                      </script>
+                  </div>
+
+            </div>
+
+        </div>
+        <div class="divleft">
+          <div style="margin-right:30px">
+            Monthly Expenses: ${{0 + expenses.housing + expenses.util + expenses.trans + expenses.school + expenses.grocery + expenses.dining + expenses.entertain + expenses.insurance + expenses.subs + expenses.beauty}}
+          </div>
+          <div>
+            Yearly Expenses: ${{12* (0 + expenses.housing + expenses.util + expenses.trans + expenses.school + expenses.grocery + expenses.dining + expenses.entertain + expenses.insurance + expenses.subs + expenses.beauty)}}
+
+          </div>
+          </div>
+        </div>
+        <script>
+                  var app = angular.module('expenseApp', []);
+                  app.controller('expenseCtrl', function($scope, $location, $http, $window) {
+                    $scope.expenses = {
+                    };
+                    $scope.expenseSave = function(){
+                      if($scope.expenses.housing == null){
+                        $scope.expenses.housing = 0
+                      }
+                      if($scope.expenses.grocery == null){
+                        $scope.expenses.grocery = 0
+                      }
+                      if($scope.expenses.trans == null){
+                        $scope.expenses.trans = 0
+                      }
+                      if($scope.expenses.util == null){
+                        $scope.expenses.util = 0
+                      }
+                      if($scope.expenses.insurance == null){
+                        $scope.expenses.insurance = 0
+                      }
+                      if($scope.expenses.school == null){
+                        $scope.expenses.school = 0
+                      }
+                      if($scope.expenses.dining == null){
+                        $scope.expenses.dining = 0
+                      }
+                      if($scope.expenses.entertain == null){
+                        $scope.expenses.entertain = 0
+                      }
+                      if($scope.expenses.subs == null){
+                        $scope.expenses.subs = 0
+                      }
+                      if($scope.expenses.beauty == null){
+                        $scope.expenses.beauty = 0
+                      }
+                      $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/expenseSave', JSON.stringify($scope.expenses)).then(function(response){
+                        console.log('success');
+                      });
+                      $window.location.href = '/src/income.html';
+                    }
+                  });
+                </script>
+
+</body>
+
+
+</html>
