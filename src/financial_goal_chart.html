@@ -314,7 +314,7 @@
     config5.displayPercent = false;
 
     //Current credit score
-    test = (1-debttoincome) * 800
+    test = Math.round(((1-debttoincome) * 550) + 300)
     var gauge6 = loadLiquidFillGauge("fillgauge6", test, config5);
     };
 
