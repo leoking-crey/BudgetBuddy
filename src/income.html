@@ -132,7 +132,7 @@
           $http.post('http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/incomeSave', JSON.stringify($scope.income)).then(function(response){
             console.log('success');
           });
-          $window.location.href = '/src/asset.html';
+          $window.location.href = '/asset.html';
         };
         $scope.expenseGet = function(){
           $http.get("http://ec2-18-217-87-201.us-east-2.compute.amazonaws.com:3001/getexpenses")
