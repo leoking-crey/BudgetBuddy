@@ -256,7 +256,7 @@
     //Savings Rate     (Salary - expense per month) / salary
     test = 0;
     if($scope.primary != 0){
-      test = ($scope.primary - $scope.totalexpense)/$scope.primary;
+      test = (($scope.primary - $scope.totalexpense)/$scope.primary) * 100;
     }
     var gauge3 = loadLiquidFillGauge("fillgauge3", test, config2);
     var config3 = liquidFillGaugeDefaultSettings();
