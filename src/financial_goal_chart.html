@@ -237,7 +237,7 @@
     if($scope.primary + $scope.passive != 0){
     test = ($scope.totalliabilities / ($scope.primary + $scope.passive)) * 100;
     }
-    debttoincome = test;
+    debttoincome = test / 100;
     console.log(test)
     var gauge2= loadLiquidFillGauge("fillgauge2", test, config1);
     var config2 = liquidFillGaugeDefaultSettings();
