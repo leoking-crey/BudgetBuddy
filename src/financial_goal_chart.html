@@ -235,7 +235,7 @@
     var debttoincome;
     test = 0;
     if($scope.primary + $scope.passive != 0){
-    test = $scope.totalliabilities / ($scope.primary + $scope.passive);
+    test = ($scope.totalliabilities / ($scope.primary + $scope.passive)) * 100;
     }
     debttoincome = test;
     console.log(test)
